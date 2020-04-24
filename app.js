@@ -12,34 +12,40 @@
 // Add new input values in to data structure
 // Calculate Budget
 
+// Budget Controller
 var budgetcontroller = (function() {
-
-    var a = 25;
-
-    var add = function(x) {
-        return x + a;
-    }
-
-    return {
-        publicTest: function(b) {
-            return add(b);
-        }
-    }
-
+    // Do something
 })();
 
+// UI Controller
 var UIController = (function() {
     // do something
 })();
 
+// Global App Controller
 var Controller = (function(bdgtCtrl, UICtrl) {
 
-    var z = bdgtCtrl.publicTest(5);
+    var itemAddCtrl = function() {
+        // 1. Get the input data
 
-    return {
-        anotherPublicTest: function() {
-            return z;
+        // 2. Add the item to the budget contoller
+
+        // 3. Add the item to the UI
+
+        // 4. Calculate the Budget
+
+        // 5. Display the budget
+        console.log(">> Exit itemAddCtrl()");
+    };
+
+    // Click Event on click of submit button
+    document.querySelector(".add__btn").addEventListener('click', itemAddCtrl);
+
+    // Click Event on Key Press "Enter"
+    document.addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+            itemAddCtrl();
         }
-    }
+    });
 
 })(budgetcontroller, UIController);
