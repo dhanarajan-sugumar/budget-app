@@ -19,7 +19,15 @@ var budgetcontroller = (function() {
 
 // UI Controller
 var UIController = (function() {
-    // do something
+    return {
+        getInputData: function() {
+            return {
+                type: document.querySelector('.add__type').value,
+                description: document.querySelector('.add__description').value,
+                value: document.querySelector('.add__value').value
+            }
+        }
+    }
 })();
 
 // Global App Controller
@@ -27,6 +35,8 @@ var Controller = (function(bdgtCtrl, UICtrl) {
 
     var itemAddCtrl = function() {
         // 1. Get the input data
+        var inputData = UICtrl.getInputData();
+        console.log(inputData);
 
         // 2. Add the item to the budget contoller
 
