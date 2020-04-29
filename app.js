@@ -102,6 +102,7 @@ var UIController = (function() {
             // insert the HTML into DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
+        // clear fields on click of add button or on keypress "enter"
         clearFields: function() {
             var fields = document.querySelectorAll(DOMStrings.descString + ", " + DOMStrings.valueString)
             var fieldArr = Array.prototype.slice.call(fields);
