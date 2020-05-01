@@ -112,7 +112,8 @@ var UIController = (function() {
         incLabel: '.budget__income--value',
         expLabel: '.budget__expenses--value',
         budgetLabel: '.budget__value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
 
     return {
@@ -129,10 +130,10 @@ var UIController = (function() {
             // Create HTML String with placeholder text
             if (type === "inc") {
                 element = DOMStrings.incomeContainer;
-                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             } else if (type === "exp") {
                 element = DOMStrings.expenseContainer;
-                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
             // Replace the placeholder text with actual data
             newHtml = html.replace('%id%', obj.id);
@@ -188,6 +189,29 @@ var Controller = (function(bdgtCtrl, UICtrl) {
                 itemAddCtrl();
             }
         });
+
+        document.querySelector(DOMStrings.container).addEventListener('click', itemDeleteCtrl);
+    }
+
+    // Delete the selected row of income or expense
+    var itemDeleteCtrl = function(event) {
+        var itemId;
+
+        //select the ID of top parent element to egt deleted
+        itemId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        if (itemId) {
+            // split the type and ID
+            splitId = itemId.split("-");
+            type = splitId[0];
+            ID = splitID[1];
+
+            // 1.Delete the Item from Data Structure
+
+            // 2.Delete the Item from UI
+
+            // 3.Update the Budget and display it in the UI
+        }
     }
 
     var itemAddCtrl = function() {
