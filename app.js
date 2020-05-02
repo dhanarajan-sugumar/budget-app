@@ -69,6 +69,20 @@ var budgetcontroller = (function() {
             // return the new item added
             return newItem;
         },
+        // Delete Item from data 
+        deleteItem: function(type, deleteID) {
+            // The map() method creates a new array with the results of calling a function for every array element.
+            var ids = data.allItems[type].map(function(current) {
+                return current.id;
+            });
+
+            var index = ids.indexOf(deleteID);
+            if (index !== -1) {
+                // The Array.splice() method is an inbuilt method in JavaScript which is used to modify the contents 
+                // of an array by removing the existing elements and/or by adding new elements.
+                data.allItems[type].splice(index, 1);
+            }
+        },
         calculateBudget: function() {
             // Calculate Total
             calculateTotal('exp');
@@ -144,6 +158,12 @@ var UIController = (function() {
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
 
+        // Remove the DOM element from inc or exp
+        deleteListItems: function(deleteID) {
+            var el = document.getElementById(deleteID);
+            el.parentNode.removeChild(el);
+        },
+
         // clear fields on click of add button or on keypress "enter"
         clearFields: function() {
             var fields = document.querySelectorAll(DOMStrings.descString + ", " + DOMStrings.valueString)
@@ -195,7 +215,7 @@ var Controller = (function(bdgtCtrl, UICtrl) {
 
     // Delete the selected row of income or expense
     var itemDeleteCtrl = function(event) {
-        var itemId;
+        var itemId, splitId, type, ID;
 
         //select the ID of top parent element to egt deleted
         itemId = event.target.parentNode.parentNode.parentNode.parentNode.id;
@@ -204,13 +224,16 @@ var Controller = (function(bdgtCtrl, UICtrl) {
             // split the type and ID
             splitId = itemId.split("-");
             type = splitId[0];
-            ID = splitID[1];
+            ID = parseInt(splitId[1]);
 
             // 1.Delete the Item from Data Structure
+            bdgtCtrl.deleteItem(type, ID)
 
             // 2.Delete the Item from UI
+            UICtrl.deleteListItems(itemId);
 
             // 3.Update the Budget and display it in the UI
+            updateBudget();
         }
     }
 
