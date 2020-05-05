@@ -156,7 +156,8 @@ var UIController = (function() {
         expLabel: '.budget__expenses--value',
         budgetLabel: '.budget__value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container'
+        container: '.container',
+        itemPercentage: '.item__percentage'
     };
 
     return {
@@ -214,6 +215,27 @@ var UIController = (function() {
             } else {
                 document.querySelector(DOMStrings.percentageLabel).textContent = "--";
             }
+        },
+
+        // Display Percentage on each items on expense
+        displayExpItemsPercentage: function(percentages) {
+
+            var fields = document.querySelectorAll(DOMStrings.itemPercentage);
+
+            var fieldListForEach = function(list, callback) {
+                for (let index = 0; index < list.length; index++) {
+                    callback(list[index], index);
+                }
+            };
+
+            fieldListForEach(fields, function(current, index) {
+
+                if (percentages[index] > 0) {
+                    current.textContent = percentages[index] + "%";
+                } else {
+                    current.textContent = "--%";
+                }
+            });
         },
 
         //returm DOM Strings to use in other functions
@@ -311,9 +333,9 @@ var Controller = (function(bdgtCtrl, UICtrl) {
 
         // 2. Get percentage
         var percentages = bdgtCtrl.getPercentage();
-        console.log(percentages);
 
         // 3. Display the percentage in the UI
+        UICtrl.displayExpItemsPercentage(percentages);
     };
 
     return {
