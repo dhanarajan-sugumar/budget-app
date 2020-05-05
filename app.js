@@ -119,13 +119,14 @@ var budgetcontroller = (function() {
         // invoke the method calPercentage() for each item in the expense array to calculate percentage
         caluclatePercentage: function() {
             data.allItems.exp.forEach(function(cur) {
-                cur.percentage = cur.calcPercentage(data.totals.inc);
+                cur.calcPercentage(data.totals.inc);
             });
         },
         getPercentage: function() {
             var percentages = data.allItems.exp.map(function(current) {
                 return current.getPercent();
             });
+            return percentages;
         },
         getBudgetData: function() {
             return {
