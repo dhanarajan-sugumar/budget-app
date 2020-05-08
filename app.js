@@ -157,7 +157,8 @@ var UIController = (function() {
         budgetLabel: '.budget__value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container',
-        itemPercentage: '.item__percentage'
+        itemPercentage: '.item__percentage',
+        month: '.budget__title--month'
     };
 
     // format the number with decimal and ',' to seperate thousands
@@ -176,6 +177,13 @@ var UIController = (function() {
             int = int.substr(0, int.length - 3) + "," + int.substr(int.length - 3, int.length);
         }
         return (type === 'exp' ? "-" : "+") + '' + int + "." + dec;
+    };
+
+    // Iterate over the list of fields and execute a call back function
+    var fieldListForEach = function(list, callback) {
+        for (let index = 0; index < list.length; index++) {
+            callback(list[index], index);
+        }
     };
 
     return {
@@ -243,12 +251,6 @@ var UIController = (function() {
 
             var fields = document.querySelectorAll(DOMStrings.itemPercentage);
 
-            var fieldListForEach = function(list, callback) {
-                for (let index = 0; index < list.length; index++) {
-                    callback(list[index], index);
-                }
-            };
-
             fieldListForEach(fields, function(current, index) {
 
                 if (percentages[index] > 0) {
@@ -257,6 +259,28 @@ var UIController = (function() {
                     current.textContent = "--%";
                 }
             });
+        },
+        // Display current month and year
+        displayMonth: function() {
+            var now, year, month, monthArr;
+            now = new Date();
+            year = now.getFullYear();
+            month = now.getMonth();
+            monthArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            document.querySelector(DOMStrings.month).textContent = monthArr[month - 1] + ", " + year;
+        },
+
+        // change the text field and button color to "RED" when 'Exp' is selected
+        changeColor: function() {
+            var fields = document.querySelectorAll(
+                DOMStrings.typeString + ',' +
+                DOMStrings.descString + ',' +
+                DOMStrings.valueString);
+
+            fieldListForEach(fields, function(cur) {
+                cur.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMStrings.addBtnString).classList.toggle('red');
         },
 
         //returm DOM Strings to use in other functions
@@ -283,6 +307,7 @@ var Controller = (function(bdgtCtrl, UICtrl) {
         });
 
         document.querySelector(DOMStrings.container).addEventListener('click', itemDeleteCtrl);
+        document.querySelector(DOMStrings.typeString).addEventListener('change', UICtrl.changeColor);
     }
 
     // Delete the selected row of income or expense
@@ -362,6 +387,7 @@ var Controller = (function(bdgtCtrl, UICtrl) {
     return {
         init: function() {
             setEventListeners();
+            UICtrl.displayMonth();
             UICtrl.displayBudgetFields({
                 budget: 0,
                 percentage: -1,
